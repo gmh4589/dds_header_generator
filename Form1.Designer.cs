@@ -72,7 +72,6 @@
             this.fileBTN.TabIndex = 0;
             this.fileBTN.Text = "Open file";
             this.fileBTN.UseVisualStyleBackColor = true;
-            this.fileBTN.Click += new System.EventHandler(this.folderOpen);
             // 
             // okBTN
             // 
@@ -98,7 +97,7 @@
             this.cancelBTN.Name = "cancelBTN";
             this.cancelBTN.Size = new System.Drawing.Size(94, 27);
             this.cancelBTN.TabIndex = 3;
-            this.cancelBTN.Text = "Cansel";
+            this.cancelBTN.Text = "Canсel";
             this.cancelBTN.UseVisualStyleBackColor = true;
             // 
             // label1
