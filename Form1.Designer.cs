@@ -97,7 +97,7 @@
             this.cancelBTN.Name = "cancelBTN";
             this.cancelBTN.Size = new System.Drawing.Size(94, 27);
             this.cancelBTN.TabIndex = 3;
-            this.cancelBTN.Text = "Canсel";
+            this.cancelBTN.Text = "Save All Type";
             this.cancelBTN.UseVisualStyleBackColor = true;
             // 
             // label1

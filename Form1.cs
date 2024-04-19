@@ -21,9 +21,9 @@ namespace DDS_Header_Generator
             cInput.SelectedIndex = Array.IndexOf(codecs, "BC3_UNORM");
 
             okBTN.Click += dds_save;
-            cancelBTN.Click += (s, e) => this.Close();
             fileBTN.Click += fileOpen;
             folderBTN.Click += folderOpen;
+            cancelBTN.Click += cancelBTN_Click;
         }
 
         private void folderOpen(object sender, EventArgs e)
@@ -48,50 +48,84 @@ namespace DDS_Header_Generator
             }
         }
 
-
-        private void dds_save(object sender, EventArgs e)
+        private void dds_file_save(string codec_name, string file_name="temp")
         {
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                MessageBox.Show("Файл не выбран!", "ВНИМАНИЕ!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (!Directory.Exists("out"))
+                Directory.CreateDirectory("out");
 
             using (FileStream sf = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 sf.Seek((long)offsetInput.Value, SeekOrigin.Begin);
                 byte[] data = new byte[sf.Length - sf.Position];
                 sf.Read(data, 0, data.Length);
-                Console.WriteLine("Длина: " + data.Length.ToString());
+                Console.WriteLine("Long: " + data.Length.ToString());
 
                 int x = (int)wInput.Value;
                 int y = (int)hInput.Value;
-                string codec = cInput.SelectedItem.ToString();
-                byte[] bpp = codecList.GetBPP(codec);
-                byte[] cdc = codecList.GetCodec(codec);
-                byte[] flags = codecList.GetCodecFlags(codec);
-                byte[] rgbaMask = codecList.GetRGBAMask(codec);
-                byte[] h_flg = codecList.GetHeadFlags(codec);
 
-                using (FileStream ddsFile = new FileStream("temp.dds", FileMode.Create, FileAccess.Write))
+                byte[] keys = codecList.GetKeys(codec_name);
+                byte[] pixel_format = codecList.GetPixelFormat(codec_name);
+                byte[] depth = codecList.GetDepth(codec_name);
+                byte[] rgb = codecList.GetRGB(codec_name);
+                byte[] codec_data = codecList.GetCodecData(codec_name);
+                byte[] name_codec = codecList.GetCodecName(codec_name);
+                int codec_data_len = codec_data.Length;
+
+                using (FileStream ddsFile = new FileStream("out\\" + file_name + ".dds", FileMode.Create, FileAccess.Write))
                 {
                     ddsFile.Write(new byte[] { 0x44, 0x44, 0x53, 0x20, 0x7C, 0x00, 0x00, 0x00 }, 0, 8); // DDS Header
-                    ddsFile.Write(h_flg, 0, 4);
+                    ddsFile.Write(new byte[] { keys[0], pixel_format[0], depth[0], 0x00 }, 0, 4);
                     ddsFile.Write(BitConverter.GetBytes(x), 0, 4); // Height
                     ddsFile.Write(BitConverter.GetBytes(y), 0, 4); // Width
                     ddsFile.Write(BitConverter.GetBytes(y), 0, 4); // Linear size
-                    ddsFile.Write(BitConverter.GetBytes(1), 0, 4); // Depth
-                    ddsFile.Write(BitConverter.GetBytes(1), 0, 4); // Mipmap count
-                    ddsFile.Write(new byte[44], 0, 44); // Reserved
-                    ddsFile.Write(BitConverter.GetBytes(32), 0, 4); // Reserved
-                    ddsFile.Write(flags, 0, 4); // Flags
-                    ddsFile.Write(cdc, 0, 4); // FourCC
-                    ddsFile.Write(bpp, 0, 4); // BPP
-                    ddsFile.Write(rgbaMask, 0, 16);
-                    ddsFile.Write(new byte[] { 0x08, 0x10, 0x40, 0x00}, 0, 4); // Caps2
-                    ddsFile.Write(new byte[16], 0, 16); // Reserved
+                    ddsFile.Write(new byte[] { 0x01 }, 0, 1);
+                    ddsFile.Write(new byte[51], 0, 51);
+                    ddsFile.Write(new byte[] { 0x20, 0x00, 0x00, 0x00 }, 0, 4);
+                    ddsFile.Write(rgb, 0, 4);
+                    ddsFile.Write(name_codec, 0, 4);
+                    ddsFile.Write(codec_data, 0, codec_data_len);
                     ddsFile.Write(data, 0, data.Length);
                 }
+            }
+        }
+
+        private void dds_save(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                MessageBox.Show("File not open!", "WARNING!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            string codec = cInput.SelectedItem.ToString();
+            bool isDir = File.GetAttributes(fileName).HasFlag(FileAttributes.Directory);
+
+            if (isDir)
+            {
+                string[] allfiles = Directory.GetFiles(fileName);
+                foreach (string file in allfiles)
+                {
+                    Console.WriteLine(file);
+                    fileName = file;
+                    string out_name = Path.GetFileNameWithoutExtension(file);
+                    this.dds_file_save(codec, out_name);
+                }
+            }
+            else
+            {
+                string out_name = Path.GetFileNameWithoutExtension(fileName);
+                this.dds_file_save(codec, out_name);
+            }
+        }
+
+        private void cancelBTN_Click(object sender, EventArgs e)
+        {
+            codecList = new CodecList();
+            string[] codecs = codecList.GetCodecList();
+
+            foreach (string codec in codecs)
+            {
+                Console.WriteLine(codec);
+                this.dds_file_save(codec, codec);
             }
         }
     }
