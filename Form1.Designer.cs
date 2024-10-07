@@ -41,10 +41,14 @@
             this.cInput = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.offsetInput = new System.Windows.Forms.NumericUpDown();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.mipsCount = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.offsetInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mipsCount)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -56,7 +60,7 @@
             this.tableLayoutPanel1.Controls.Add(this.okBTN, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.folderBTN, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.cancelBTN, 1, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 215);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 167);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53F));
@@ -105,9 +109,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(10, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Width";
+            this.label1.Text = "Height";
             // 
             // wInput
             // 
@@ -123,7 +127,7 @@
             0,
             0});
             this.wInput.Name = "wInput";
-            this.wInput.Size = new System.Drawing.Size(200, 20);
+            this.wInput.Size = new System.Drawing.Size(97, 20);
             this.wInput.TabIndex = 2;
             this.wInput.Value = new decimal(new int[] {
             1024,
@@ -134,15 +138,15 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 60);
+            this.label2.Location = new System.Drawing.Point(123, 10);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Hieght";
+            this.label2.Text = "Width";
             // 
             // hInput
             // 
-            this.hInput.Location = new System.Drawing.Point(10, 80);
+            this.hInput.Location = new System.Drawing.Point(115, 30);
             this.hInput.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -154,7 +158,7 @@
             0,
             0});
             this.hInput.Name = "hInput";
-            this.hInput.Size = new System.Drawing.Size(200, 20);
+            this.hInput.Size = new System.Drawing.Size(97, 20);
             this.hInput.TabIndex = 4;
             this.hInput.Value = new decimal(new int[] {
             1024,
@@ -165,7 +169,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 110);
+            this.label3.Location = new System.Drawing.Point(12, 53);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 5;
@@ -175,7 +179,7 @@
             // 
             this.cInput.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.cInput.FormattingEnabled = true;
-            this.cInput.Location = new System.Drawing.Point(10, 130);
+            this.cInput.Location = new System.Drawing.Point(10, 69);
             this.cInput.Name = "cInput";
             this.cInput.Size = new System.Drawing.Size(200, 21);
             this.cInput.TabIndex = 6;
@@ -183,7 +187,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 160);
+            this.label4.Location = new System.Drawing.Point(12, 93);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 7;
@@ -191,21 +195,56 @@
             // 
             // offsetInput
             // 
-            this.offsetInput.Location = new System.Drawing.Point(10, 180);
+            this.offsetInput.Location = new System.Drawing.Point(10, 109);
             this.offsetInput.Maximum = new decimal(new int[] {
             1410065408,
             2,
             0,
             0});
             this.offsetInput.Name = "offsetInput";
-            this.offsetInput.Size = new System.Drawing.Size(200, 20);
+            this.offsetInput.Size = new System.Drawing.Size(97, 20);
             this.offsetInput.TabIndex = 8;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(13, 144);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(81, 17);
+            this.checkBox1.TabIndex = 9;
+            this.checkBox1.Text = "Is cubemap";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(123, 93);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Mips count";
+            // 
+            // mipsCount
+            // 
+            this.mipsCount.Location = new System.Drawing.Point(115, 110);
+            this.mipsCount.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.mipsCount.Name = "mipsCount";
+            this.mipsCount.Size = new System.Drawing.Size(97, 20);
+            this.mipsCount.TabIndex = 11;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(224, 301);
+            this.ClientSize = new System.Drawing.Size(224, 250);
+            this.Controls.Add(this.mipsCount);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.offsetInput);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cInput);
@@ -221,6 +260,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.wInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.offsetInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mipsCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,6 +281,9 @@
         private System.Windows.Forms.ComboBox cInput;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown offsetInput;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown mipsCount;
     }
 }
 

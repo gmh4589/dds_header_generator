@@ -9,6 +9,7 @@ namespace DDS_Header_Generator
     {
         private string fileName = string.Empty;
         private CodecList codecList;
+        bool isCubemap = false;
 
         public Form1()
         {
@@ -70,16 +71,32 @@ namespace DDS_Header_Generator
                 byte[] codec_data = codecList.GetCodecData(codec_name);
                 byte[] name_codec = codecList.GetCodecName(codec_name);
                 int codec_data_len = codec_data.Length;
+                int linear_size = 0; 
+                int mips_count = (int)mipsCount.Value; 
+                
+                if (x > y) {
+                    linear_size = x;   
+                } else {
+                    linear_size = y; 
+                }
 
-                using (FileStream ddsFile = new FileStream("out\\" + file_name + ".dds", FileMode.Create, FileAccess.Write))
+                if (isCubemap)
+                {
+                    codec_data[25] = 0xFE;
+                } else {
+                    codec_data[25] = 0x00;
+                }
+
+                    using (FileStream ddsFile = new FileStream("out\\" + file_name + ".dds", FileMode.Create, FileAccess.Write))
                 {
                     ddsFile.Write(new byte[] { 0x44, 0x44, 0x53, 0x20, 0x7C, 0x00, 0x00, 0x00 }, 0, 8); // DDS Header
                     ddsFile.Write(new byte[] { keys[0], pixel_format[0], depth[0], 0x00 }, 0, 4);
                     ddsFile.Write(BitConverter.GetBytes(x), 0, 4); // Height
                     ddsFile.Write(BitConverter.GetBytes(y), 0, 4); // Width
-                    ddsFile.Write(BitConverter.GetBytes(y), 0, 4); // Linear size
-                    ddsFile.Write(new byte[] { 0x01 }, 0, 1);
-                    ddsFile.Write(new byte[51], 0, 51);
+                    ddsFile.Write(BitConverter.GetBytes(linear_size), 0, 4); // Linear size
+                    ddsFile.Write(new byte[] { 0x01, 0x00, 0x00, 0x00 }, 0, 4);
+                    ddsFile.Write(BitConverter.GetBytes(mips_count), 0, 1);
+                    ddsFile.Write(new byte[47], 0, 47);
                     ddsFile.Write(new byte[] { 0x20, 0x00, 0x00, 0x00 }, 0, 4);
                     ddsFile.Write(rgb, 0, 4);
                     ddsFile.Write(name_codec, 0, 4);
@@ -127,6 +144,14 @@ namespace DDS_Header_Generator
                 Console.WriteLine(codec);
                 this.dds_file_save(codec, codec);
             }
+
+            MessageBox.Show("All formats are saved!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            isCubemap = !isCubemap;
+        }
+
     }
 }
