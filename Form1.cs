@@ -139,10 +139,17 @@ namespace DDS_Header_Generator
             codecList = new CodecList();
             string[] codecs = codecList.GetCodecList();
 
-            foreach (string codec in codecs)
+            if (string.IsNullOrWhiteSpace(fileName))
             {
-                Console.WriteLine(codec);
-                this.dds_file_save(codec, codec);
+                MessageBox.Show("File not open!", "WARNING!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            else {
+                foreach (string codec in codecs)
+                {
+                    Console.WriteLine(codec);
+                    this.dds_file_save(codec, codec);
+                }
             }
 
             MessageBox.Show("All formats are saved!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
